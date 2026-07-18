@@ -1,4 +1,4 @@
-# HCV Genotyping: Advances in Encoding Techniques and Feature Integration
+# Improved HCV Genotyping Based on Sequence Encoding and Feature Integration
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
