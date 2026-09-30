@@ -1,7 +1,5 @@
 # A Lightweight Alignment-Free Framework for Robust Hepatitis C Virus Genotyping Using Cluster-Aware Evaluation
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-
 **Authors:**  
 Ahmed M. Fahmy, Muhammed S. Hammad, Walid I. Al-atabany, Mai S. Mabrouk
 
