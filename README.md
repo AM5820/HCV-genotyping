@@ -1,4 +1,4 @@
-# Improved HCV Genotyping Based on Sequence Encoding and Feature Integration
+# A Lightweight Alignment-Free Framework for Robust Hepatitis C Virus Genotyping Using Cluster-Aware Evaluation
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
