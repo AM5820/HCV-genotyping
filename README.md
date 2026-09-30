@@ -9,72 +9,130 @@ Ahmed M. Fahmy, Muhammed S. Hammad, Walid I. Al-atabany, Mai S. Mabrouk
 
 ## Overview
 
-This repository contains all source code, data processing pipelines, and supplementary scripts for the study:
+The study presents a lightweight and interpretable machine-learning framework for **Hepatitis C Virus (HCV) genotype/subtype classification** using alignment-free nucleotide-sequence representations.
 
-**Optimizing HCV Genotyping: Advances in Encoding Techniques and Feature Integration**
+The framework systematically investigates:
 
-Our work explores advanced encoding techniques and the integration of supplementary genomic features to boost machine learning performance in Hepatitis C Virus (HCV) genotyping. We systematically benchmark multiple sequence encodings (FCGR, k-mer, One-hot, Label), combine them with biologically relevant features (GC content, GC skew), and apply class balancing using SMOTE across various ML models (XGBoost, Random Forest, MLP, KNN).
+- Four sequence encoding methods:
+  - k-mer encoding
+  - Frequency Chaos Game Representation (FCGR)
+  - One-hot encoding
+  - Label encoding
+- Different k-mer granularities (`k = 3, 4, 5`)
+- Supplementary genomic descriptors:
+  - GC content
+  - GC skew
+- Class-imbalance handling using:
+  - SMOTE
+  - Random undersampling
+- Multiple machine-learning classifiers:
+  - XGBoost
+  - Random Forest
+  - K-Nearest Neighbors (KNN)
+  - Multi-Layer Perceptron (MLP)
+- CD-HIT-EST cluster-aware train/test splitting to reduce sequence-identity leakage
+- Feature-importance analysis
+- Per-genotype performance analysis
+- Statistical evaluation of SMOTE and GC-based feature integration
+- Comparison with an alignment-based NCBI genotyping approach
 
----
-
-## Table of Contents
-
-- [Background](#background)
-- [Pipeline Overview](#pipeline-overview)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Results](#results)
-- [Data Availability](#data-availability)
-- [Citing](#citing)
-- [Acknowledgements](#acknowledgements)
-- [License](#license)
+A major focus of the study is providing a stricter assessment of model generalization. Instead of relying on a conventional random train/test split, nucleotide sequences are first clustered using **CD-HIT-EST at 90% sequence identity**, and entire clusters are assigned to either the training or testing partition.
 
 ---
 
 ## Background
 
-Hepatitis C Virus (HCV) genotyping is essential for guiding clinical therapies and epidemiological surveillance. Traditional lab methods face limitations due to high genetic variability, contamination, and class imbalance in datasets.
+Hepatitis C Virus is characterized by substantial genetic diversity, making accurate genotype and subtype identification important for viral surveillance and genomic analysis.
 
-This repository provides a reproducible pipeline to:
-- Encode genomic sequences using advanced representations (k-mer, FCGR, etc.).
-- Integrate supplementary sequence features (GC content, GC skew).
-- Apply oversampling (SMOTE) to handle class imbalance.
-- Evaluate multiple ML classifiers for HCV genotype prediction.
+Traditional HCV genotyping approaches often rely on laboratory assays or sequence-alignment methods. Computational machine-learning approaches provide an alternative way to characterize genomic sequences, but their evaluation can be affected by several challenges, including:
+
+- High sequence similarity between training and testing samples
+- Severe class imbalance
+- Variable sequence lengths
+- Partial genomic sequences
+- High-dimensional nucleotide representations
+- Potential information leakage caused by random data splitting
+
+This study addresses these issues using **alignment-free sequence representations**, imbalance-handling techniques, and a **similarity-aware evaluation protocol**.
 
 ---
 
-## Pipeline Overview
+## Key Contributions
 
-1. **Data Acquisition**  
-   - Download sequences from [Los Alamos HCV Sequence Database](https://hcv.lanl.gov/content/sequence/HCV/ToolsOutline.html).
+The main contributions of this work are:
 
-2. **Preprocessing**  
-   - Split into complete/partial sequences and apply quality control.
+1. **Cluster-aware HCV genotype evaluation**
 
-3. **Encoding Methods**  
-   - k-mer encoding (k=5 recommended)
-   - Frequency Chaos Game Representation (FCGR)
-   - One-hot encoding
+   CD-HIT-EST clustering at **90% nucleotide-sequence identity** is used before train/test splitting so that sequences from the same similarity cluster are not distributed across both partitions.
+
+2. **Systematic comparison of four sequence representations**
+
+   - k-mer
+   - FCGR
+   - One-hot
    - Label encoding
 
-4. **Feature Engineering**  
-   - Extract GC content and GC skew for each sequence.
+3. **Investigation of class-imbalance strategies**
 
-5. **Class Balancing**  
-   - Use [SMOTE](https://imbalanced-learn.org/stable/references/generated/imblearn.over_sampling.SMOTE.html) to balance classes.
+   The study evaluates both:
+   - SMOTE
+   - Random undersampling
 
-6. **Model Training**  
-   - Evaluate XGBoost, Random Forest, MLP, KNN (and optionally CNN) with 5-fold stratified CV.
+4. **Evaluation of supplementary genomic descriptors**
 
-7. **Evaluation**  
-   - Report accuracy, precision, recall, F1-score for all genotypes.
-   - Analyze feature importance.
+   GC content and GC skew are evaluated as biologically interpretable compositional features.
+
+5. **Multiple classifier families**
+
+   The same representations are evaluated using:
+   - XGBoost
+   - Random Forest
+   - KNN
+   - MLP
+
+6. **Statistical evaluation**
+
+   A two-way repeated-measures ANOVA is used to investigate the effects of:
+   - SMOTE
+   - GC-based feature integration
+   - Their interaction
+
+7. **Model interpretability**
+
+   Feature-importance analysis identifies influential:
+   - 5-mer sequence motifs
+   - GC content
+   - GC skew
+
+8. **Per-genotype analysis**
+
+   Performance is analyzed separately across the ten HCV genotype/subtype classes.
+
+9. **Comparison with an alignment-based genotyping approach**
+
+   The proposed machine-learning framework is also discussed in comparison with the NCBI BLAST-based genotyping tool.
 
 ---
 
-## Installation
+## Dataset
 
-1. **Clone the repo:**
-   ```bash
-   git clone https://github.com/AM5820/HCV-genotyping.git
-   cd HCV-genotyping
+HCV nucleotide sequences were obtained from the:
+
+**Los Alamos Hepatitis C Virus Sequence Database**
+
+https://hcv.lanl.gov/
+
+Ten genotype/subtype classes were included:
+
+| Class |
+|---|
+| 1a |
+| 1b |
+| 2a |
+| 2b |
+| 2c |
+| 3a |
+| 3b |
+| 4 |
+| 5 |
+| 6 |
